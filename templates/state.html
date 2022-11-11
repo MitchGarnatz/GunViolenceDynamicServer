@@ -3,27 +3,26 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Cereal</title>
+	<title>Gun Violence - %%STATE_TITLE%%</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div id="content">
-        <img id="manufacturer_img" src="%%MFR_IMAGE%%" alt="%%MFR_ALT_TEXT%%" />
-        <h1 id="manufacturer_name">%%MANUFACTURER%%</h1>
+        <img id="manufacturer_img" src="%%STATE_IMAGE%%" alt="%%STATE_ALT_TEXT%%" />
+        <h1 id="manufacturer_name">%%STATE_HEADER%%</h1>
         <div class="clear"></div>
         <table>
             <thead>
                 <tr>
-                    <th class="cereal_title">Cereal</th>
-                    <th>Calories</th>
-                    <th>Carbs</th>
-                    <th>Protein</th>
-                    <th>Fat</th>
-                    <th>Rating</th>
+                    <th>Incident ID</th>
+                    <th>Date</th>
+                    <th>State</th>
+                    <th>Killed</th>
+                    <th>Injured</th>
                 </tr>
             </thead>
             <tbody>
-                %%CEREAL_INFO%%
+                %%STATE_INFO%%
             </tbody>
         </table>
 </body>
