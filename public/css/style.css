@@ -59,9 +59,8 @@ p2 {
 
 .background1 {
     /*background-color: #661a9c;*/
-
     background-image: url("img/plants.png");
-
+    margin-bottom: 0px !important;
 }
 
 .background2 {
@@ -74,6 +73,12 @@ p2 {
     padding: 2rem;
     padding-top: 1rem;
 }
+
+.background4 {
+    background-color: #009879;
+    padding: 1rem;
+    height: 4rem;
+} 
 
 .resumeBorder {
     border-top:rgb(0, 0, 0);
