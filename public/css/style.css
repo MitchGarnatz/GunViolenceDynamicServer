@@ -84,7 +84,8 @@ p2 {
 }
 
 table th {
-    background-color: #661a9c;
+    background-color: #009879;
+    color: rgb(255, 255, 255);
     text-align: center;
 }
 
@@ -159,6 +160,10 @@ th {
     text-align: center;
 }
 
+#stateYearChart {
+    padding-bottom: 2rem;
+}
+
 td {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1rem;
@@ -169,17 +174,17 @@ td {
 }
 
 #content {
-    width: 1050px;
     background-color: #D8D8D8;
 }
 
 #state_img {
     float: left;
-    width: 150px;
+    width: 15rem;
     margin: 12px 32px 20px 12px;
 }
 
 #header_name {
+    float: left;
     margin-top: 12px;
 }
 

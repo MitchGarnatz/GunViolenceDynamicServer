@@ -90,6 +90,7 @@ app.get("/state/:selected_state", (req, res) => {
     // run the query
 
     if (stateFound) {
+      let response = template.toString();
       let query =
         "SELECT GunViolence.id, GunViolence.date, GunViolence.state, GunViolence.killed, \
         GunViolence.injured FROM GunViolence WHERE GunViolence.state = ?";
@@ -97,11 +98,59 @@ app.get("/state/:selected_state", (req, res) => {
       db.all(query, [state], (err, rows) => {
         console.log(err);
         console.log(rows);
-        let response = template.toString();
+
+        let year2014 = 0;
+        let year2015 = 0;
+        let year2016 = 0;
+        let year2017 = 0;
+        let year2018 = 0;
+
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i].date.includes("2014")) {
+            year2014++;
+          }
+          if (rows[i].date.includes("2015")) {
+            year2015++;
+          }
+          if (rows[i].date.includes("2016")) {
+            year2016++;
+          }
+          if (rows[i].date.includes("2017")) {
+            year2017++;
+          }
+          if (rows[i].date.includes("2018")) {
+            year2018++;
+          }
+        }
+        console.log(
+          "west " +
+            year2014 +
+            ", southwest " +
+            year2015 +
+            ", midwest " +
+            year2016 +
+            ", southeast " +
+            year2017 +
+            ", northeast " +
+            year2018
+        );
+        response = response.replace("%%2014%%", year2014);
+        response = response.replace("%%2015%%", year2015);
+        response = response.replace("%%2016%%", year2016);
+        response = response.replace("%%2017%%", year2017);
+        response = response.replace("%%2018%%", year2018);
+
+        response = response.replace("%%STATE%%", rows[0].state);
         response = response.replace("%%STATE_TITLE%%", rows[0].state);
         response = response.replace("%%STATE_HEADER%%", rows[0].state);
-        response = response.replace("%%STATE_ALT_TEXT%%", "logo for " + rows[0].state);
-        response = response.replace("%%STATE_IMAGE%%", "/images/" + state + ".png");
+        response = response.replace(
+          "%%STATE_ALT_TEXT%%",
+          "logo for " + rows[0].state
+        );
+        response = response.replace(
+          "%%STATE_IMAGE%%",
+          "/images/" + state + ".png"
+        );
         let state_data = "";
         for (let i = 0; i < rows.length; i++) {
           state_data += "<tr>";
@@ -116,7 +165,6 @@ app.get("/state/:selected_state", (req, res) => {
         res.status(200).type("html").send(response);
       });
     }
-
   });
 });
 

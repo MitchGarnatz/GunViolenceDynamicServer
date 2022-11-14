@@ -4,13 +4,75 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Gun Violence - %%STATE_TITLE%%</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+    <link rel="stylesheet" href="/css/foundation.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <!--Navigation-->
+    <div class="top-bar navigation">
+      <div class="top-bar-left">
+        <a href="/homepage" class="homepage">Home Page</a>
+      </div>
+    </div>
+
     <div id="content">
         <img id="state_img" src="%%STATE_IMAGE%%" alt="%%STATE_ALT_TEXT%%" />
         <h1 id="header_name">%%STATE_HEADER%%</h1>
+
         <div class="clear"></div>
+        <div class="cell">
+            <div class="background2">
+                <p2>The data displayed shows the trend of incidents related to Gun Violence throughout the years by state. The informations allows you to see whether the activity has been decreasing over the years and when it was at it's peak. With this, citizens can take into consideration what states are more prone to gun violence and law enforcement know which areas need improvement.</p2>
+            </div>
+            <canvas id="stateYearChart" width="1000" height="500"></canvas>
+            <script>
+                const ctx = document.getElementById('stateYearChart');
+
+                const myChart1 = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2014',
+                                '2015',
+                                '2016',
+                                '2017',
+                                '2018'],
+                        datasets: [{
+                            label: 'Number of Gun Violence Related Incidents Per Year in ' +  '%%STATE%%',
+                            data: ['%%2014%%', '%%2015%%', '%%2016%%', '%%2017%%', '%%2018%%'],
+                            fill: false,
+                            backgroundColor: [
+                                'rgba(255, 255, 255, 1)',
+                                'rgba(255, 255, 255, 1)',
+                                'rgba(255, 255, 255, 1)',
+                                'rgba(255, 255, 255, 1)',
+                                'rgba(255, 255, 255, 1)',
+                                'rgba(255, 255, 255, 1)',
+                            ],
+                            borderColor: [
+                                'rgba(0, 152, 121, 1)',
+                            ],
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                ticks: {color: 'black',
+                                beginAtZero: true}
+                            },
+                            x: {
+                                ticks: {color: 'black',
+                                beginAtZero: true}
+                            },
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+    <div>
         <table>
             <thead>
                 <tr>
@@ -25,5 +87,15 @@
                 %%STATE_INFO%%
             </tbody>
         </table>
+    </div>
+
+    <!-- include before closing <body> tag -->
+    <script src="js/vendor.js"></script>
+    <script src="js/foundation.js"></script>
+    <script type="application/javascript">
+      $(document).foundation();
+    </script>
+  </body>
+</html>
 </body>
 </html>
