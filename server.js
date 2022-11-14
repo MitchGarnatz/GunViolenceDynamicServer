@@ -27,50 +27,63 @@ app.use(express.static(public_dir));
 
 // GET request handler for home page '/' (redirect to desired route)
 app.get("/", (req, res) => {
-  let home = "/index.html";
+  let home = "/homepage";
   res.redirect(home);
+  
 });
 
-/*
-// Example GET request handler for data about a specific year
-app.get('/year/:selected_year', (req, res) => {
-    console.log(req.params.selected_year);
-    fs.readFile(path.join(template_dir, 'year.html'), (err, template) => {
-        // modify `template` and send response
-        // this will require a query to the SQL database
+app.get("/homepage", (req, res) => {
+  fs.readFile(
+    path.join(public_dir, "homepage.html"),
+    (err, template) => {
+      let query = "SELECT States.name FROM States";
+      db.all(query, [], (err, rows) => {
+        console.log(err);
+        console.log(rows);
+        let response = template.toString();
+        let state_data = "";
+        for (let i = 0; i < rows.length; i++) {
+          state_data += "<li>";
+          state_data +=
+            "<a href='/state/" + rows[i].name + "'>" + rows[i].name + "</a>";
+          state_data += "</li>";
+        }
+        response = response.replace("%%STATES%%", state_data);
 
-        res.status(200).type('html').send(template); // <-- you may need to change this
-    });
+
+        res.status(200).type("html").send(response);
+      });
+    }
+  );
 });
-*/
 
+// Kevin - By State
 app.get("/state/:selected_state", (req, res) => {
   let state = req.params.selected_state;
   fs.readFile(path.join(template_dir, "state.html"), async (err, template) => {
     let stateQuery = "SELECT DISTINCT state FROM GunViolence";
-
     let stateFound = false;
 
     await new Promise((resolve,reject)=>{
       db.all(stateQuery,[],(err,rows)=>{
-        if(err)reject(err)
-                    resolve(rows)
+        if(err) {
+          reject(err);
+        }
+        resolve(rows);
         for (var i = 0; i < rows.length; i++) {
-     
           if (req.params.selected_state == rows[i]['state']) { 
             stateFound = true;  
           }
-  
         }
       });
-      });
-   
+    });
+
     console.log(stateFound);
 
     // if the state was not found 
     // return 404
     if(stateFound == false) {
-      return res.status(404).send({'404 error page' :req.params.selected_state + ' state does not exist'});
+      return res.status(404).send({'404 error page' :req.params.selected_state + ' state does not exist. Check capitalization & spaces.'});
     }
 
     // if the state is in the database
@@ -79,7 +92,7 @@ app.get("/state/:selected_state", (req, res) => {
     if (stateFound) {
       let query =
         "SELECT GunViolence.id, GunViolence.date, GunViolence.state, GunViolence.killed, \
-GunViolence.injured FROM GunViolence WHERE GunViolence.state = ?";
+        GunViolence.injured FROM GunViolence WHERE GunViolence.state = ?";
 
       db.all(query, [state], (err, rows) => {
         console.log(err);
@@ -107,7 +120,7 @@ GunViolence.injured FROM GunViolence WHERE GunViolence.state = ?";
   });
 });
 
-// Example GET request handler for data about a specific year
+// Mitch - By Day
 app.get('/date/:selected_date', (req, res) => {
   let date = req.params.selected_date;
   console.log(req.params.selected_date);
@@ -237,8 +250,9 @@ app.get('/date/:selected_date', (req, res) => {
   });
 });
 
-app.get('/year/:selected_date', (req, res) => {
-  let date = req.params.selected_date;
+// Anisa - By Year
+app.get('/year/:selected_year', (req, res) => {
+  let date = req.params.selected_year;
   fs.readFile(path.join(template_dir, 'year.html'), async (err, template) => {
     // modify `template` and send response
     // this will require a query to the SQL database
@@ -250,10 +264,12 @@ app.get('/year/:selected_date', (req, res) => {
     let dateQuery = "SELECT DISTINCT date FROM GunViolence";
     await new Promise((resolve,reject)=>{
       db.all(dateQuery,[],(err,rows)=>{
-        if(err)reject(err)
-                    resolve(rows)
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
         for (var i = 0; i < rows.length; i++) { 
-          if (req.params.selected_date == rows[i]['date'].split('-')[0]) { 
+          if (req.params.selected_year == rows[i]['date'].split('-')[0]) { 
             dateFound = true;  
           }
   
@@ -263,7 +279,7 @@ app.get('/year/:selected_date', (req, res) => {
     // ENDgit
     // return a 404 return if the date was not found
     if(!dateFound) {
-      return res.status(404).send({ '404 error page' :req.params.selected_date + ' year does not exist'});
+      return res.status(404).send({ '404 error page' :req.params.selected_year + ' year does not exist'});
     }
 
     let query =
@@ -339,7 +355,6 @@ app.get('/year/:selected_date', (req, res) => {
     });
   });
 });
-
 
 app.use(function (req, res) {
   res.status(404).end('404 error, cant find that page');

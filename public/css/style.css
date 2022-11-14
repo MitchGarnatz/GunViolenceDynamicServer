@@ -57,14 +57,6 @@ p2 {
     font-family: 'Lucida Sans', sans-serif;
 }
 
-.headshot {
-    border-radius: 50%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 1rem;
-}
-
 .background1 {
     /*background-color: #661a9c;*/
 
@@ -105,26 +97,32 @@ a {
     text-align: left;
 }
 
-.navigation {
-    width: 100%;
-    text-align: center;
+.top-bar {
+    background-color: #009879;
+    padding: 0.3rem;
+}
+
+.menu a {
+    background-color: #009879;
+}
+
+.homepage {
+    padding-left: 0.75rem;
 }
 
 .navigation a {
+    font-size: 1.75rem;
     color: white;
 }
 
-.navigation td{
+.navigation li{
     background-color: #009879;
     text-align: center;
-  }
-
-.navigation td:hover{
-    background-color: rgb(238, 238, 238);
 }
 
-.navigation td:hover a{
-    color: black;
+.navigation a:hover{
+    color: rgb(64, 64, 64) !important;
+    text-align: center;
 }
 
 #currentPage {
@@ -175,7 +173,7 @@ td {
     background-color: #D8D8D8;
 }
 
-#manufacturer_img {
+#state_img {
     float: left;
     width: 150px;
     margin: 12px 32px 20px 12px;

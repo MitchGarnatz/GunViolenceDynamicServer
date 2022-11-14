@@ -21,14 +21,43 @@
   </head>
   <body>
     <!--Navigation-->
-    <table class="navigation">
-      <tr>
-          <td id="currentPage"><a href="">Gun Violence Home Page</a></td>
-          <td><a href="/templates/year.html">Data By Year</a></td>
-          <td><a href="date/2014-01-01">Data By Date</a></td>
-          <td><a href="/templates/state.html">Data By States</a></td>
-      </tr>
-    </table>
+    <div class="top-bar navigation">
+      <div class="top-bar-left">
+        <a class="homepage">Home Page</a>
+      </div>
+      <div class="top-bar-right">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li>
+            <a class="menu-button" href="#">State</a>
+            <ul class="menu">
+              %%STATES%%
+            </ul>
+          </li>
+          <li>
+            <a class="menu-button" href="#">Day</a>
+            <ul class="menu">
+              <li><a href="/day/Sunday">Sunday</a></li>
+              <li><a href="/day/Monday">Monday</a></li>
+              <li><a href="/day/Tuesday">Tuesday</a></li>
+              <li><a href="/day/Wednesday">Wednesday</a></li>
+              <li><a href="/day/Thursday">Thursday</a></li>
+              <li><a href="/day/Friday">Friday</a></li>
+              <li><a href="/day/Saturday">Saturday</a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="menu-button" href="#">Year</a>
+            <ul class="menu">
+              <li><a href="/year/2014">2014</a></li>
+              <li><a href="/year/2015">2015</a></li>
+              <li><a href="/year/2016">2016</a></li>
+              <li><a href="/year/2017">2017</a></li>
+              <li><a href="/year/2018">2018</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <div class="background1">
 
