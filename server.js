@@ -76,6 +76,137 @@ app.get("/state/:selected_state", (req, res) => {
   });
 });
 
+// Example GET request handler for data about a specific year
+app.get('/date/:selected_date', (req, res) => {
+  let date = req.params.selected_date;
+  console.log(req.params.selected_date);
+  fs.readFile(path.join(template_dir, 'date.html'), (err, template) => {
+
+    let response = template.toString();
+
+    let query =
+    "SELECT GunViolence.id, GunViolence.date, GunViolence.state, GunViolence.killed, \
+    GunViolence.injured FROM GunViolence WHERE GunViolence.date = ?";
+
+    let queryRegions = "SELECT States.region FROM States WHERE States.name IN (SELECT GunViolence.state FROM GunViolence WHERE GunViolence.date = ?)";
+    console.log(queryRegions);
+
+    let queryFatalGreaterThan = "SELECT States.region FROM States WHERE States.name IN (SELECT GunViolence.state FROM GunViolence WHERE GunViolence.date = ?  AND GunViolence.killed > 0)";
+
+    db.all(queryFatalGreaterThan, [date], (err, rows) => {
+      console.log(err);
+      console.log(rows);
+      console.log("hello world");
+      console.log(rows.length);
+
+      let west1 = 0;
+      let southwest1 = 0;
+      let midwest1 = 0;
+      let southeast1 = 0;
+      let northeast1 = 0;
+      let pacific1 = 0;
+
+      for(let i=0; i<rows.length; i++) {
+        if (rows[i].region === 0) {
+          west1++;
+        }
+        if (rows[i].region === 1) {
+          southwest1++;
+        }
+        if (rows[i].region === 2) {
+          midwest1++;
+        }
+        if (rows[i].region === 3) {
+          southeast1++
+        }
+        if (rows[i].region === 4) {
+          northeast1++;
+        }
+        if (rows[i].region === 5) {
+          pacific1++;
+        }
+      }
+      console.log("west " + west1 + ", southwest " + southwest1 +", midwest " + midwest1 + ", southeast " + southeast1 + ", northeast " + northeast1 + ", pacific " + pacific1);
+      response = response.replace("%%WestFatal%%", west1);
+      response = response.replace("%%SouthwestFatal%%", southwest1);
+      response = response.replace("%%MidwestFatal%%", midwest1);
+      response = response.replace("%%SoutheastFatal%%", southeast1);
+      response = response.replace("%%NortheastFatal%%", northeast1);
+      response = response.replace("%%PacificFatal%%", pacific1);
+      response = response.replace('%%MFR_IMAGE%%', '/images/plants.png');
+          
+  });
+
+    db.all(queryRegions, [date], (err, rows) => {
+      console.log(err);
+      //console.log(rows);
+      console.log(rows.length);
+
+      let west = 0;
+      let southwest = 0;
+      let midwest = 0;
+      let southeast = 0;
+      let northeast = 0;
+      let pacific = 0;
+
+      for(let i=0; i<rows.length; i++) {
+        if (rows[i].region === 0) {
+          west++;
+        }
+        if (rows[i].region === 1) {
+          southwest++;
+        }
+        if (rows[i].region === 2) {
+          midwest++;
+        }
+        if (rows[i].region === 3) {
+          southeast++
+        }
+        if (rows[i].region === 4) {
+          northeast++;
+        }
+        if (rows[i].region === 5) {
+          pacific++;
+        }
+        console.log("west " + west + ", southwest " + southwest +", midwest " + midwest + ", southeast " + southeast + ", northeast " + northeast + ", pacific " + pacific);
+      }
+      response = response.replace("%%West%%", west);
+      response = response.replace("%%Southwest%%", southwest);
+      response = response.replace("%%Midwest%%", midwest);
+      response = response.replace("%%Southeast%%", southeast);
+      response = response.replace("%%Northeast%%", northeast);
+      response = response.replace("%%Pacific%%", pacific);
+      
+
+  });
+
+
+    db.all(query, [date], (err, rows) => {
+      console.log(err);
+      // console.log(rows);
+      // response = response.replace("%%DATE_TITLE%%", rows[0].date);
+      // response = response.replace("%%DATE_HEADER%%", "" + rows.date);
+      // response = response.replace("%%DATE%%", rows[0].date);
+      // //response = response.replace("%%West%%", rows[0].date);
+      let date_data = "";
+      for(let i=0; i<rows.length; i++) {
+        date_data += "<tr>";
+        date_data += "<td>" + rows[i].id + "</td>";
+        date_data += "<td>" + rows[i].date + "</td>";
+        response = response.replace("%%DATE_HEADER%%", rows[0].date);
+        response = response.replace("%%DATE%%", rows[0].date);
+        date_data += "<td>" + rows[i].state + "</td>";
+        date_data += "<td>" + rows[i].killed + "</td>";
+        date_data += "<td>" + rows[i].injured + "</td>";
+        date_data += "</tr>";
+      }
+      response = response.replace("%%DATE_INFO%%", date_data);
+      res.status(200).type("html").send(response);
+    });
+  });
+});
+
+
 app.listen(port, () => {
   console.log("Now listening on port " + port);
 });
