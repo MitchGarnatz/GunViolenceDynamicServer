@@ -3,28 +3,168 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Cereal</title>
-    <link rel="stylesheet" href="/css/style.css">
+	<title>Gun Violence - Day</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+    <link rel="stylesheet" href="/css/foundation.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
 </head>
+
 <body>
-    <div id="content">
-        <img id="manufacturer_img" src="%%MFR_IMAGE%%" alt="%%MFR_ALT_TEXT%%" />
-        <h1 id="manufacturer_name">%%MANUFACTURER%%</h1>
-        <div class="clear"></div>
-        <table>
-            <thead>
-                <tr>
-                    <th class="cereal_title">Cereal</th>
-                    <th>Calories</th>
-                    <th>Carbs</th>
-                    <th>Protein</th>
-                    <th>Fat</th>
-                    <th>Rating</th>
-                </tr>
-            </thead>
-            <tbody>
-                %%CEREAL_INFO%%
-            </tbody>
-        </table>
+
+  <!--Navigation-->
+  <table class="navigation">
+    <tr>
+        <td><a href="/">Gun Violence Home Page</a></td>
+        <td><a href="/templates/year.html">Data By Year</a></td>
+        <td id="currentPage"><a href="date/2014-01-01">Data By Date</a></td>
+        <td><a href="/templates/state.html">Data By States</a></td>
+    </tr>
+  </table>
+
+  <br><br/>
+  <div class="grid-x">
+    <div class="small-0 large-1 cell">
+    </div>
+    <div class="small-12 large-6 cell">
+        <h1>Gun Violence Statistics Based on Specific Days Ranging from 2014-2018</h1>
+        <br><br/>
+        <div class="background2">
+        <p2>In evaluating the incidents of Gun Violence in the United States based on a specific day of the week, citizens can be aware of when gun violence rates are higher. More life will be sustained and people will feel safer knowing which regions of the country are safer at different times in comparison to others.</p2>
+        </div>
+    </div>
+    <div class="small-0 large-1 cell"> 
+    </div>
+    <div class="small-12 large-4 cell">
+        <img src="/images/calendar.png"></img>
+    </div>
+  </div>
+
+  <br><br/>
+  <br><br/>
+
+  <div class="grid-x">
+    <div class="small-12 large-6 cell">
+        <canvas id="myChart1" width="600" height="400"></canvas>
+
+<script>
+
+const ctx = document.getElementById('myChart1');
+
+const myChart1 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['illinois',
+              'indiana',
+              'iowa',
+              'kansas',
+              'michigan',
+              'minnesota',
+              'missouri',
+              'nebraska',
+              'norhtDakota',
+              'ohio',
+              'southDakota',
+              'wisconsin'],
+        datasets: [{
+            label: 'Number of Incidents Per State in the Midwest when Day(id) ' +  '%%DAY%%',
+            data: ['%%11%%', '%%22%%', '%%33%%', '%%44%%', '%%55%%', '%%66%%', '%%77%%', '%%88%%', '%%99%%', '%%11%%', '%%12%%', '%%13%%'],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                ticks: {color: 'white',
+                beginAtZero: true}
+            },
+            x: {
+                ticks: {color: 'white',
+                beginAtZero: true}
+            },
+            
+        }
+    }
+});
+</script>
+
+    </div>
+    <div class="small-0 large-1 cell">
+    </div>
+    <div class="small-12 large-4 cell">
+        <br><br/>
+        <div class="background2">
+            <p2>The bar graph to the left displays the number of incidents of gun violence that occurred on a specific day of the week. </p2>
+            </div>
+    </div>
+  </div>
+
+  <br><br/>
+  <br><br/>
+  <div class="grid-x">
+    <div class="small-12 large-12 cell">
+        <div class="background2">
+        <p2>Here is where I will explain a little about sustainability</p2>
+    </div>
+  </div>
+       
+  
+<br><br/>
+<br><br/> 
+
+</script>
+  </div>
+  </div>
+
+  <div class="grid-x">
+    <div class="small-0 large-1 cell">
+    </div>
+    <div class="small-12 large-10 cell">
+        <div id="content">
+            <h1 id="header_name"> Gun Violence Data Relating to: %%DATE_HEADER%%</h1>
+            <div class="clear"></div>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Incident ID</th>
+                        <th>Date</th>
+                        <th>Day</th>
+                        <th>State</th>
+                        <th>Killed</th>
+                        <th>Injured</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    %%DATE_INFO%%
+                </tbody>
+            </table>
+            </div>
+    </div>
+    <div class="small-0 large-1 cell">
+    </div>
+  </div>
+
+<!-- include before closing <body> tag -->
+    <script src="js/vendor.js"></script>
+    <script src="js/foundation.js"></script>
+    <script type="application/javascript">
+      $(document).foundation();
+    </script>
 </body>
 </html>

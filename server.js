@@ -121,134 +121,136 @@ app.get("/state/:selected_state", (req, res) => {
 });
 
 // Mitch - By Day
-app.get('/date/:selected_date', (req, res) => {
+app.get('/day/:selected_date', (req, res) => {
   let date = req.params.selected_date;
-  console.log(req.params.selected_date);
-  fs.readFile(path.join(template_dir, 'date.html'), (err, template) => {
+  fs.readFile(path.join(template_dir, 'day.html'), async (err, template) => {
 
-    let response = template.toString();
+    let dateQuery = "SELECT DISTINCT day FROM GunViolence";
+    let dateFound = false;
+  
+    await new Promise((resolve,reject)=>{
+      db.all(dateQuery,[],(err,rows)=>{
+        if(err) {
+          reject(err);
+        }
+        resolve(rows);
+        for (var i = 0; i < rows.length; i++) {
+            if (req.params.selected_date == rows[i]['day']) { 
+            dateFound = true;  
+          }
+        }
+      });
+    });
 
-    let query =
-    "SELECT GunViolence.id, GunViolence.date, GunViolence.state, GunViolence.killed, \
-    GunViolence.injured FROM GunViolence WHERE GunViolence.date = ?";
+    if(dateFound == false) {
+      return res.status(404).send({'404 error page' :req.params.selected_date + ' date does not exist. Check capitalization & spaces.'});
+    }
+  
+    if (dateFound) {
 
-    let queryRegions = "SELECT States.region FROM States WHERE States.name IN (SELECT GunViolence.state FROM GunViolence WHERE GunViolence.date = ?)";
-    console.log(queryRegions);
+      let response = template.toString();
 
-    let queryFatalGreaterThan = "SELECT States.region FROM States WHERE States.name IN (SELECT GunViolence.state FROM GunViolence WHERE GunViolence.date = ?  AND GunViolence.killed > 0)";
+      let query =
+      "SELECT GunViolence.id, GunViolence.date, GunViolence.day, GunViolence.state, GunViolence.killed, \
+      GunViolence.injured FROM GunViolence WHERE GunViolence.day = ?";
 
-    db.all(queryFatalGreaterThan, [date], (err, rows) => {
-      console.log(err);
-      console.log(rows);
-      console.log("hello world");
-      console.log(rows.length);
+      let queryDay = "SELECT GunViolence.state FROM GunViolence WHERE GunViolence.day = ?";
 
-      let west1 = 0;
-      let southwest1 = 0;
-      let midwest1 = 0;
-      let southeast1 = 0;
-      let northeast1 = 0;
-      let pacific1 = 0;
+      db.all(queryDay, [date], (err, rows) => {
+        console.log(err);
+        console.log(rows);
 
-      for(let i=0; i<rows.length; i++) {
-        if (rows[i].region === 0) {
-          west1++;
-        }
-        if (rows[i].region === 1) {
-          southwest1++;
-        }
-        if (rows[i].region === 2) {
-          midwest1++;
-        }
-        if (rows[i].region === 3) {
-          southeast1++
-        }
-        if (rows[i].region === 4) {
-          northeast1++;
-        }
-        if (rows[i].region === 5) {
-          pacific1++;
-        }
-      }
-      console.log("west " + west1 + ", southwest " + southwest1 +", midwest " + midwest1 + ", southeast " + southeast1 + ", northeast " + northeast1 + ", pacific " + pacific1);
-      response = response.replace("%%WestFatal%%", west1);
-      response = response.replace("%%SouthwestFatal%%", southwest1);
-      response = response.replace("%%MidwestFatal%%", midwest1);
-      response = response.replace("%%SoutheastFatal%%", southeast1);
-      response = response.replace("%%NortheastFatal%%", northeast1);
-      response = response.replace("%%PacificFatal%%", pacific1);
-      response = response.replace('%%MFR_IMAGE%%', '/images/plants.png');
-          
-  });
+        let illinois = 0;
+        let indiana = 0;
+        let iowa = 0;
+        let kansas = 0;
+        let michigan = 0;
+        let minnesota = 0;
+        let missouri = 0;
+        let nebraska = 0;
+        let northDakota = 0;
+        let ohio = 0;
+        let southDakota = 0;
+        let wisconsin = 0;
 
-    db.all(queryRegions, [date], (err, rows) => {
-      console.log(err);
-      //console.log(rows);
-      console.log(rows.length);
+        for(let i=0; i<rows.length; i++) {
+          if (rows[i].state === 'Illinois') {
+            illinois++;
+          }
+          if (rows[i].state === 'Indiana') {
+            indiana++;
+          }
+          if (rows[i].state === 'Iowa') {
+            iowa++;
+          }
+          if (rows[i].state === 'Kansas') {
+            kansas++
+          }
+          if (rows[i].state === 'Michigan') {
+            michigan++;
+          }
+          if (rows[i].state === 'Minnesota') {
+            minnesota++;
+          }
+          if (rows[i].state === 'Missouri') {
+            missouri++;
+          }
+          if (rows[i].state === 'Nebraska') {
+            nebraska++;
+          }
+          if (rows[i].state === 'North Dakota') {
+            northDakota++;
+          }
+          if (rows[i].state === 'Ohio') {
+            ohio++;
+          }
+          if (rows[i].state === 'South Dakota') {
+            southDakota++;
+          }
+          if (rows[i].state === 'Wisconsin') {
+            wisconsin++;
+          }
 
-      let west = 0;
-      let southwest = 0;
-      let midwest = 0;
-      let southeast = 0;
-      let northeast = 0;
-      let pacific = 0;
-
-      for(let i=0; i<rows.length; i++) {
-        if (rows[i].region === 0) {
-          west++;
         }
-        if (rows[i].region === 1) {
-          southwest++;
-        }
-        if (rows[i].region === 2) {
-          midwest++;
-        }
-        if (rows[i].region === 3) {
-          southeast++
-        }
-        if (rows[i].region === 4) {
-          northeast++;
-        }
-        if (rows[i].region === 5) {
-          pacific++;
-        }
-        console.log("west " + west + ", southwest " + southwest +", midwest " + midwest + ", southeast " + southeast + ", northeast " + northeast + ", pacific " + pacific);
-      }
-      response = response.replace("%%West%%", west);
-      response = response.replace("%%Southwest%%", southwest);
-      response = response.replace("%%Midwest%%", midwest);
-      response = response.replace("%%Southeast%%", southeast);
-      response = response.replace("%%Northeast%%", northeast);
-      response = response.replace("%%Pacific%%", pacific);
-      
-
-  });
-
+        console.log(wisconsin);
+        response = response.replace("%%11%%", illinois);
+        response = response.replace("%%22%%", indiana);
+        response = response.replace("%%33%%", iowa);
+        response = response.replace("%%44%%", kansas);
+        response = response.replace("%%55%%", michigan);
+        response = response.replace("%%66%%", minnesota);
+        response = response.replace("%%77%%", missouri);
+        response = response.replace("%%88%%", nebraska);
+        response = response.replace("%%99%%", northDakota);
+        response = response.replace("%%11%%", ohio);
+        response = response.replace("%%12%%", southDakota);
+        response = response.replace("%%13%%", wisconsin);
+        
+        });
 
     db.all(query, [date], (err, rows) => {
-      console.log(err);
-      // console.log(rows);
-      // response = response.replace("%%DATE_TITLE%%", rows[0].date);
-      // response = response.replace("%%DATE_HEADER%%", "" + rows.date);
-      // response = response.replace("%%DATE%%", rows[0].date);
-      // //response = response.replace("%%West%%", rows[0].date);
       let date_data = "";
       for(let i=0; i<rows.length; i++) {
         date_data += "<tr>";
         date_data += "<td>" + rows[i].id + "</td>";
         date_data += "<td>" + rows[i].date + "</td>";
         response = response.replace("%%DATE_HEADER%%", rows[0].date);
-        response = response.replace("%%DATE%%", rows[0].date);
+        response = response.replace("%%DAY%%", rows[0].day);
+        date_data += "<td>" + rows[i].day + "</td>";
         date_data += "<td>" + rows[i].state + "</td>";
         date_data += "<td>" + rows[i].killed + "</td>";
         date_data += "<td>" + rows[i].injured + "</td>";
         date_data += "</tr>";
-      }
+        }
       response = response.replace("%%DATE_INFO%%", date_data);
       res.status(200).type("html").send(response);
-    });
+      });
+    }
   });
 });
+
+
+//Mitch - End
 
 // Anisa - By Year
 app.get('/year/:selected_year', (req, res) => {
