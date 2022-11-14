@@ -11,12 +11,13 @@
 </head>
 
 <body>
-     <!--Navigation-->
-  <div class="top-bar navigation">
-    <div class="top-bar-left">
-      <a href="/homepage" class="homepage">Home Page</a>
+    <!--Navigation-->
+    <div class="top-bar navigation">
+        <div class="top-bar-left">
+        <a href="/homepage" style="text-decoration:none" class="homepage">Home Page</a>
+        </div>
     </div>
-  </div>
+
     <br><br/>
     <div class="grid-x">
         <div class="small-0 large-1 cell">
@@ -34,10 +35,9 @@
     
       <div class="grid-x">
         <div class="small-12 large-6 cell">
-            <canvas id="myChart1" width="1300" height="700"></canvas>
-<canvas id="myChart1" width="1000" height="1000"></canvas>
+            <canvas id="yearChart" width="1300" height="700"></canvas>
 <script>
-    const ctx = document.getElementById('myChart1');
+    const ctx = document.getElementById('yearChart');
     const myChart1 = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -72,16 +72,19 @@
     },
     options: {
         scales: {
-            y: {    
-                beginAtZero: true,    
+            y: {
+                ticks: {color: 'white',
+                beginAtZero: true},
                 title : {
+                    color: 'white',
                     display: true,
                     text: 'Amount of Fatalities'
-
                 }
-                     
-            }         
-            
+            },
+            x: {
+                ticks: {color: 'white',
+                beginAtZero: true}
+            },     
         }
     }
 });
