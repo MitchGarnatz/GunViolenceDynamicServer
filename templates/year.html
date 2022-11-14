@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gun Violence - %%DATE_TITLE%%</title>
+    <title>Gun Violence - Year </title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
     <script src="plotly-2.16.1.min.js"></script>
@@ -11,13 +11,33 @@
 </head>
 
 <body>
-
-<canvas id="myChart1" width="800" height="400"></canvas>
-
+     <!--Navigation-->
+  <div class="top-bar navigation">
+    <div class="top-bar-left">
+      <a href="/homepage" class="homepage">Home Page</a>
+    </div>
+  </div>
+    <br><br/>
+    <div class="grid-x">
+        <div class="small-0 large-1 cell">
+        </div>
+        <div class="small-12 large-4 cell">
+            <img src="/images/calendar.png" style="float:right"></img>
+        </div>
+        <div class="small-12 large-6 cell">
+            <h1>Gun Violence Statistics Based on Years</h1>
+            <br><br/>
+        </div>
+        <div class="small-0 large-1 cell"> 
+        </div>
+      </div>
+    
+      <div class="grid-x">
+        <div class="small-12 large-6 cell">
+            <canvas id="myChart1" width="1300" height="700"></canvas>
+<canvas id="myChart1" width="1000" height="1000"></canvas>
 <script>
-
     const ctx = document.getElementById('myChart1');
-
     const myChart1 = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -66,6 +86,48 @@
     }
 });
 </script>
+</div>
+</div>     
+<div class="grid-x">
+    <div class="small-12 large-7 cell">
+        <div class="background2">
+            <p2>This table shows the Gun Violence statistics for each state in the specified year</p2>
+        </div>
+    </div>
+          <div class="grid-x">
+            <div class="small-0 large-1 cell"> 
+            </div>
+            <div class="small-12 large-10 cell">
+                <div id="content">
+                    <h1 id="header_name"> Gun Violence Data Relating to Specified Year</h1>
+                    <div class="clear"></div>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Incident ID</th>
+                                <th>Date</th>
+                                <th>State</th>
+                                <th>Killed</th>
+                                <th>Injured</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            %%DATE_INFO%%
+                        </tbody>
+                    </table>
+                    </div>
+            </div>
+            <div class="small-0 large-1 cell">   
+            </div>
+          </div>
+        
+        <!-- include before closing <body> tag -->
+            <script src="js/vendor.js"></script>
+            <script src="js/foundation.js"></script>
+            <script type="application/javascript">
+              $(document).foundation();
+            </script>
+
 
 </body>
 </html>
