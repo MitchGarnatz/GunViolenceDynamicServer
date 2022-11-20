@@ -337,7 +337,9 @@ app.get('/year/:selected_year', (req, res) => {
     GunViolence.injured FROM GunViolence WHERE strftime('%Y',GunViolence.date)= ?";
     //let DATA_TITLE = strftime('%Y',GunViolence.date);
     //let DATE_HEADER = strftime('%Y',GunViolence.date);
-    let queryRegions = "SELECT States.region FROM States WHERE States.name IN (SELECT GunViolence.state FROM GunViolence WHERE strftime('%Y',GunViolence.date) = ?)";
+    let queryRegions = 
+      "SELECT States.region FROM States INNER JOIN GunViolence ON \
+    States.name = GunViolence.state WHERE strftime('%Y',GunViolence.date) = ? LIMIT 10000";
     console.log(queryRegions);
 
 
@@ -381,7 +383,7 @@ app.get('/year/:selected_year', (req, res) => {
       response = response.replace("%%Northeast%%", northeast);
       response = response.replace("%%Pacific%%", pacific);
 
-
+      console.log("Rows: " + rows.length);
     });
 
     db.all(query, [date], (err, rows) => {
